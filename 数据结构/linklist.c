@@ -95,6 +95,7 @@ void InsertList(LinkList head, int i, DataType data)
     p->next = np;
 }
 
+// 删除列表中的结点
 DataType DeleteList(LinkList head, int i)
 {
     LinkNode *p = head;
@@ -111,6 +112,28 @@ DataType DeleteList(LinkList head, int i)
     DataType data = dp->data;
     free(dp);
     return data;
+}
+
+// 链表的反转
+LinkList ReserveList(LinkList head)
+{
+    if (head->next == NULL || head == NULL) {
+        return head;
+    }
+    LinkNode *p = head->next;
+    LinkNode *rear = p;
+    int n = 0;
+    while (rear->next != NULL) {
+        rear = rear->next;
+        n++;
+    }
+    DataType data;
+    while (n > 0) {
+        data = DeleteList(head, 0);
+        p = p->next;
+        InsertList(head, n--, data);
+    }
+    return head;
 }
 
 // 打印链表
@@ -140,6 +163,10 @@ int main()
     head = CreateListR();
     PrintList(head);
 
+    printf("ReserveList...\n");
+    ReserveList(head);
+    PrintList(head);
+
     // printf("GetNodeByIndex...\n");
     // int i;
     // scanf("%d", &i);
@@ -163,11 +190,11 @@ int main()
     // InsertList(head, i, data);
     // PrintList(head);
 
-    printf("DeleteList...\n");
-    int i;
-    scanf("%d", &i);
-    DataType data = DeleteList(head, i);
-    printf("%c\n", data);
-    PrintList(head);
-    return 0;
+    // printf("DeleteList...\n");
+    // int i;
+    // scanf("%d", &i);
+    // DataType data = DeleteList(head, i);
+    // printf("%c\n", data);
+    // PrintList(head);
+    // return 0;
 }
