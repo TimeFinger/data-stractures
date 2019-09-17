@@ -12,6 +12,7 @@ BinTree CreateBinTree(BinTree bt)
 {
     // 不用数组存, 直接用指针指行不行？ 
     // 不行, 因为下面新增加节点时需要知道其双亲结点, 如果不把所有结点按顺序放入一个数组(或队列)中, 无法得知新加结点的双亲结点是哪个结点
+    // 数组是为了模拟队列, 不用队列是因为方便查看减少依赖
     BinTNode *Q[100];
     BinTNode *p;
     int front = 1;      // 从1开始计数, 永远指向双亲结点
@@ -54,10 +55,30 @@ void Preorder(BinTree bt)
     }
 }
 
+void Inorder(BinTree bt)
+{
+    BinTNode *st[100];
+    int top = 0;
+    st[top] = bt;
+    while (top > -1)
+    {
+        while (st[top] != NULL) {
+            top++;
+            st[top] = st[top-1]->lchild;
+        }
+        top--;      // 上面的循环结束后, top指向的必定为空, 所以减1
+        if (top >= 0) {
+            printf("%c, ", st[top]->data);
+            st[top] = st[top]->rchild;      // top所指定的肯定无左结点了, 打印后直接將下级右结点赋值给top的指向, 相当于出栈又进栈
+        }
+    }
+}
+
 int main()
 {
     BinTree bt;
     bt = CreateBinTree(bt);
     Preorder(bt);
+    Inorder(bt);
     return 0;
 }
