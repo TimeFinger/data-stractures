@@ -46,6 +46,7 @@ BinTree CreateBinTree(BinTree bt)
     return bt;
 }
 
+// 递归前序遍历
 void Preorder(BinTree bt)
 {
     if (bt != NULL) {
@@ -55,6 +56,32 @@ void Preorder(BinTree bt)
     }
 }
 
+// 非递归方式的前序遍历
+void Preorder2(BinTree bt)
+{
+    BinTNode *st[100];     // 模拟栈
+    int top = 0;
+    st[top++] = bt;
+    int now = 0;
+    while (top > -1) {
+        bt = st[--top];     // 注意定要将值赋值给bt, 否则bt出
+        if (bt != NULL) {  // 先入右再入左
+            printf("%c,", bt->data);
+            st[top++] = bt->rchild;
+            st[top++] = bt->lchild;
+        }
+        // 以下方式未何不正确?
+        // now = --top;
+        // if (st[now] != NULL) {
+        //     printf("%c, ", st[now]->data);
+        //     st[top++] = st[now]->rchild;
+        //     st[top++] = st[now]->lchild;
+        // }
+    }
+    printf("\n");
+}
+
+// 非递归中序遍历
 void Inorder(BinTree bt)
 {
     BinTNode *st[100];
@@ -78,7 +105,7 @@ int main()
 {
     BinTree bt;
     bt = CreateBinTree(bt);
-    Preorder(bt);
-    Inorder(bt);
+    Preorder2(bt);
+    // Inorder(bt);
     return 0;
 }
