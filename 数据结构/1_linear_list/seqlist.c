@@ -79,6 +79,24 @@ void MaxMin(SeqList L, DataType *max, DataType *min, int *i, int *j)
     }
 }
 
+// 从A顺序表中减去B顺序表, A和B都为递增序列
+void SubList(SeqList *A, SeqList B)
+{
+    int k = 0;
+    for (int i = 0; i < B.length; i++) {
+        for (int j = k; j < A->length; j++) {
+            if (B.data[i] <= A->data[j]) {
+                k = j;
+                break;
+            }
+            continue;
+        }
+        if (B.data[i] == A->data[k]) {
+            DeleteList(A, k);
+        }
+    }
+}
+
 void ShowList(SeqList L)
 {
     for (int i = 0; i < L.length; i++) {
@@ -95,6 +113,17 @@ int main()
         InsertList(&L, L.length, i);
     }
     ShowList(L);
+
+
+    SeqList B;
+    InitList(&B);
+    for (int i = 0; i < 10; i++) {
+        InsertList(&B, B.length, i-5);
+    }
+    ShowList(B);
+    SubList(&L, B);
+    ShowList(L);
+
     DeleteList(&L, 4);
     ShowList(L);
     DeleteList(&L, 7);
